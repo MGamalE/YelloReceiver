@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -30,16 +31,53 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
 }
 
-dependencies {
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.5.0'
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+dependencies { configuration ->
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    androidX(configuration)
+    kotlinX(configuration)
+    archComponentX(configuration)
+    roomDependencies(configuration)
+}
+
+private static void androidX(configuration) {
+    configuration.implementation 'androidx.core:core-ktx:1.5.0'
+    configuration.implementation 'androidx.appcompat:appcompat:1.3.0'
+    configuration.implementation 'com.google.android.material:material:1.3.0'
+    configuration.implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    configuration.implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+    configuration.implementation 'com.google.code.gson:gson:2.8.7'
+    configuration.implementation("androidx.activity:activity-ktx:1.2.3")
+
+}
+
+private static void kotlinX(configuration) {
+    def coroutine_version = "1.4.3"
+    configuration.implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
+}
+
+private static void archComponentX(configuration) {
+    def lifecycle_version = "2.3.0"
+    configuration.implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    configuration.implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    configuration.implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+
+}
+
+private static void roomDependencies(configuration) {
+    def room_version = "2.3.0"
+
+    configuration.implementation("androidx.room:room-runtime:$room_version")
+    configuration.annotationProcessor "androidx.room:room-compiler:$room_version"
+    configuration.kapt("androidx.room:room-compiler:$room_version")
+    configuration.implementation "androidx.room:room-ktx:$room_version"
 }
