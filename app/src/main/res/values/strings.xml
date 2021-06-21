@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">YelloReceiver</string>
+    <string name="display_current_user">Display Current User</string>
 </resources>
